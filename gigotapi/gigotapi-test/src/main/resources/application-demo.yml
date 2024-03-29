@@ -1,0 +1,5 @@
+gigot-api:
+  client:
+    # 羊腿Api密钥
+    secret-id:
+    secret-key:

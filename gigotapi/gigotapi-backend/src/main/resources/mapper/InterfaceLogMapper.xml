@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.panyuwen.gigotapibackend.mapper.InterfaceLogMapper">
+
+    <resultMap id="BaseResultMap" type="top.panyuwen.gigotapicommon.model.entity.InterfaceLog">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="interfaceId" column="interfaceId" jdbcType="BIGINT"/>
+            <result property="requestTime" column="requestTime" jdbcType="TIMESTAMP"/>
+            <result property="requestMethod" column="requestMethod" jdbcType="VARCHAR"/>
+            <result property="requestUrl" column="requestUrl" jdbcType="VARCHAR"/>
+            <result property="requestContentLength" column="requestContentLength" jdbcType="BIGINT"/>
+            <result property="responseStatusCode" column="responseStatusCode" jdbcType="INTEGER"/>
+            <result property="responseContentLength" column="responseContentLength" jdbcType="BIGINT"/>
+            <result property="requestDuration" column="requestDuration" jdbcType="BIGINT"/>
+            <result property="userId" column="userId" jdbcType="BIGINT"/>
+            <result property="clientIp" column="clientIp" jdbcType="VARCHAR"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,interfaceId,requestTime,
+        requestMethod,requestUrl,requestContentLength,
+        responseStatusCode,responseContentLength,requestDuration,
+        userId,clientIp,createTime,
+        updateTime,isDelete
+    </sql>
+
+    <select id="getInterfaceInfoAverageCost" resultType="java.lang.Integer">
+        select round(avg(requestDuration),0) as totalInvokesAvg from interface_log order by updateTime desc limit 1000
+    </select>
+</mapper>

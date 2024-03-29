@@ -1,0 +1,30 @@
+# IntelliJ project files
+.idea/
+*.iml
+*.ipr
+*.iws
+out
+gem
+
+# Fleet project files
+.fleet/
+
+# npm
+package-lock.json
+node_modules
+yarn-error.log
+
+# vscode
+.vscode
+
+# MacOS files
+.DS_Store
+Thumbs.db
+
+#yarn
+yarn.lock
+
+# vuepress
+docs/.vuepress/dist
+
+

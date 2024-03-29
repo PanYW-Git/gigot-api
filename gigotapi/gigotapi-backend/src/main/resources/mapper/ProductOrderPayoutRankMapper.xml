@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.panyuwen.gigotapibackend.mapper.ProductOrderPayoutRankMapper">
+
+    <resultMap id="BaseResultMap" type="top.panyuwen.gigotapicommon.model.entity.ProductOrderPayoutRank">
+            <result property="userName" column="userName" jdbcType="VARCHAR"/>
+            <result property="total" column="total" jdbcType="DECIMAL"/>
+            <result property="payOutRank" column="payOutRank" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        userName,total,payOutRank
+    </sql>
+</mapper>

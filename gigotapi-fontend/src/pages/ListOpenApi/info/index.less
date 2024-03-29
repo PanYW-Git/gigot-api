@@ -1,0 +1,29 @@
+.highlightLine:before {
+  content: '';
+  width: 4px;
+  height: 16px;
+  background: #00aeff;
+  border-radius: 2px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.highlightLine {
+  font-size: 14px;
+  font-weight: 700;
+  color: #555;
+  padding-left: 14px;
+  height: 16px;
+  line-height: 16px;
+  margin-bottom: 18px;
+  position: relative;
+}
+/*覆盖ant-design-vue 样式**/
+.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector,
+.ant-input-disabled,
+.ant-input-number-disabled {
+  color: rgba(0, 0, 0, 0.65) !important;
+  background: #ffffff !important;
+  cursor: not-allowed !important;
+}

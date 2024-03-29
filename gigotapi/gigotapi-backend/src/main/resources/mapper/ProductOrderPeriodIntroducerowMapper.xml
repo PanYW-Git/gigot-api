@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.panyuwen.gigotapibackend.mapper.ProductOrderPeriodIntroducerowMapper">
+
+    <resultMap id="BaseResultMap" type="top.panyuwen.gigotapicommon.model.entity.ProductOrderPeriodIntroducerow">
+            <result property="dayTotal" column="day_total" jdbcType="DECIMAL"/>
+            <result property="dayOverDay" column="day_over_day" jdbcType="VARCHAR"/>
+            <result property="weekOverWeek" column="week_over_week" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        day_total,day_over_day,week_over_week
+    </sql>
+</mapper>

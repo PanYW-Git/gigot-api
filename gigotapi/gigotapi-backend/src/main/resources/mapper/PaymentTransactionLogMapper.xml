@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.panyuwen.gigotapibackend.mapper.PaymentTransactionLogMapper">
+
+    <resultMap id="BaseResultMap" type="top.panyuwen.gigotapicommon.model.entity.PaymentTransactionLog">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="orderNo" column="orderNo" jdbcType="VARCHAR"/>
+        <result property="transactionId" column="transactionId" jdbcType="VARCHAR"/>
+        <result property="tradeType" column="tradeType" jdbcType="VARCHAR"/>
+        <result property="tradeState" column="tradeState" jdbcType="VARCHAR"/>
+        <result property="tradeStateDesc" column="tradeStateDesc" jdbcType="VARCHAR"/>
+        <result property="successTime" column="successTime" jdbcType="VARCHAR"/>
+        <result property="openid" column="openid" jdbcType="VARCHAR"/>
+        <result property="payerTotal" column="payerTotal" jdbcType="BIGINT"/>
+        <result property="currency" column="currency" jdbcType="VARCHAR"/>
+        <result property="payerCurrency" column="payerCurrency" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="total" column="total" jdbcType="BIGINT"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,orderNo,transactionId,
+        tradeType,tradeState,tradeStateDesc,
+        successTime,openid,payerTotal,
+        currency,payerCurrency,content,
+        total,createTime,updateTime
+    </sql>
+</mapper>

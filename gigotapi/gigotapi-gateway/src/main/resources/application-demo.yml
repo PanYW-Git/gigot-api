@@ -1,0 +1,34 @@
+server:
+  port: 8000
+spring:
+  redis:
+    database: 1
+    host: # todo redis地址
+    port: # todo redis端口号
+    timeout: 5000
+    password: # todo redis密码
+  cloud:
+    gateway:
+      default-filters:
+        - AddResponseHeader=X-Source, gigotapi
+      routes:
+        - id: api_route
+          uri: http://127.0.0.1:8002
+          predicates:
+            - Path=/api/**
+# 以下配置指定了应用的名称、使用的协议（Dubbo）、注册中心的类型（Nacos）和地址
+dubbo:
+  application:
+    qosEnable: false
+    enable-file-cache: false
+    # todo 设置应用的名称 端口号
+    name:
+    qosPort:
+  # 指定使用 Dubbo 协议，且端口设置为 -1，表示随机分配可用端口
+  protocol:
+    name: dubbo
+    port: 28000
+  registry:
+    # 配置注册中心为 Nacos，使用的地址是 nacos://localhost:8848
+    id: nacos-registry
+    address: nacos://localhost:8848
