@@ -5,10 +5,12 @@ import cn.hutool.core.util.StrUtil;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import top.panyuwen.gigotapibackend.utils.UserHolder;
+import top.panyuwen.gigotapicommon.model.entity.User;
 import top.panyuwen.gigotapicommon.model.vo.LoginUserVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +31,11 @@ public class RefreshToTokenInterceptor implements HandlerInterceptor {
 
     private StringRedisTemplate stringRedisTemplate;
 
-    public RefreshToTokenInterceptor(StringRedisTemplate stringRedisTemplate) {
+    private UserHolder userHolder;
+
+    public RefreshToTokenInterceptor(StringRedisTemplate stringRedisTemplate, UserHolder userHolder) {
         this.stringRedisTemplate = stringRedisTemplate;
+        this.userHolder = userHolder;
     }
 
     @Override
@@ -66,7 +71,7 @@ public class RefreshToTokenInterceptor implements HandlerInterceptor {
         //返回值：填充的bean
         LoginUserVO loginUserVO = JSON.parseObject(loginUserVOString, LoginUserVO.class);
         //5.存在，保存到ThreadLocal
-        UserHolder.saveUser(loginUserVO);
+        userHolder.saveUser(loginUserVO);
         //6.重新设置有效期（只要用户访问就重置用户登录命令redis的有效期）
         stringRedisTemplate.expire(loginKey,LOGIN_TOKEN_TTL, TimeUnit.MINUTES);
         return true;

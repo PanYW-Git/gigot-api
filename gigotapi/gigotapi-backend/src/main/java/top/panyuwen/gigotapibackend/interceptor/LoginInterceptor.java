@@ -19,9 +19,18 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class LoginInterceptor implements HandlerInterceptor {
 
+    private UserHolder userHolder;
+
+    public LoginInterceptor(UserHolder userHolder){
+        this.userHolder = userHolder;
+    }
+
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        LoginUserVO user = UserHolder.getUser();
+        String authorization = request.getHeader("Authorization");
+        log.info("获取到的token=============》authorization：{}",authorization);
+        LoginUserVO user = userHolder.getUser(authorization);
         if(user == null){
             //未获取到登录信息
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);

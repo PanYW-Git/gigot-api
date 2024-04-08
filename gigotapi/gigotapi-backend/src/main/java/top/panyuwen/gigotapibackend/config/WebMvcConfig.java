@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.panyuwen.gigotapibackend.interceptor.LoginInterceptor;
 import top.panyuwen.gigotapibackend.interceptor.RefreshToTokenInterceptor;
+import top.panyuwen.gigotapibackend.utils.UserHolder;
 
 import javax.annotation.Resource;
 
@@ -15,15 +16,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private UserHolder userHolder;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //登录拦截器
         //token刷新拦截器
-        registry.addInterceptor(new RefreshToTokenInterceptor(stringRedisTemplate)).addPathPatterns(
+        registry.addInterceptor(new RefreshToTokenInterceptor(stringRedisTemplate,userHolder)).addPathPatterns(
                 //拦截所有资源
                 "/**"
         ).order(0);
-        registry.addInterceptor(new LoginInterceptor()).excludePathPatterns(
+        registry.addInterceptor(new LoginInterceptor(userHolder)).excludePathPatterns(
                 "/pay/order/notify",
                 "/user/register",
                 "/user/login",

@@ -81,6 +81,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private CacheClient cacheClient;
 
+    @Autowired
+    private UserHolder userHolder;
+
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
@@ -229,7 +232,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             LoginUserVO loginUserVO = BeanUtil.copyProperties(user, LoginUserVO.class);
             cacheClient.set(LOGIN_TOKEN_KEY + user.getId(), loginUserVO, LOGIN_TOKEN_TTL, TimeUnit.MINUTES);
             // 写入本地线程池
-            UserHolder.saveUser(loginUserVO);
+            userHolder.saveUser(loginUserVO);
             return loginUserVO;
         }
     }
@@ -243,7 +246,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User getLoginUser(HttpServletRequest request) {
         // 先判断是否已登录
-        LoginUserVO loginUserVO = UserHolder.getUser();
+        String authorization = request.getHeader("Authorization");
+        LoginUserVO loginUserVO = userHolder.getUser(authorization);
         log.info("loginUserVO：", loginUserVO);
         User currentUser = BeanUtil.copyProperties(loginUserVO, User.class);
         if (ObjectUtil.isEmpty(currentUser) || ObjectUtil.isEmpty(currentUser.getId())) {
@@ -268,7 +272,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User getLoginUserPermitNull(HttpServletRequest request) {
         // 先判断是否已登录
-        LoginUserVO loginUserVO = UserHolder.getUser();
+        String authorization = request.getHeader("Authorization");
+        LoginUserVO loginUserVO = userHolder.getUser(authorization);
         User currentUser = BeanUtil.copyProperties(loginUserVO, User.class);
         if (currentUser == null || currentUser.getId() == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
@@ -289,7 +294,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public boolean isAdmin(HttpServletRequest request) {
         // 仅管理员可查询
-        LoginUserVO loginUserVO = UserHolder.getUser();
+        String authorization = request.getHeader("Authorization");
+        LoginUserVO loginUserVO = userHolder.getUser(authorization);
         User currentUser = BeanUtil.copyProperties(loginUserVO, User.class);
         return isAdmin(currentUser);
     }
@@ -306,12 +312,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public boolean userLogout(HttpServletRequest request) {
-        if (UserHolder.getUser() == null) {
+        String authorization = request.getHeader("Authorization");
+        if (userHolder.getUser(authorization) == null) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR, "未登录");
         }
         // 移除登录态
-        LoginUserVO user = UserHolder.getUser();
-        UserHolder.removeUser();
+        LoginUserVO user = userHolder.getUser(authorization);
+        userHolder.removeUser(authorization);
         stringRedisTemplate.delete(LOGIN_TOKEN_KEY + user.getId());
         return true;
     }
